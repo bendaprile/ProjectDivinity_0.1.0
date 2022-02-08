@@ -98,11 +98,17 @@ public class DeveloperTools : MonoBehaviour
             }
         }
 
-        // Equip all items
+        // Add 1000 xp
         if (Input.GetKeyDown(KeyCode.F7))
         {
             PlayerStats playerStats = FindObjectOfType<PlayerStats>();
             playerStats.AddEXP(1000);
+        }
+
+        // Kill the player
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            FindObjectOfType<PlayerMaster>().PlayerDeath(true);
         }
     }
 
@@ -146,5 +152,6 @@ public class DeveloperTools : MonoBehaviour
         tmText.text = tmText.text + "\n" + "F5: Spawn Random Event";
         tmText.text = tmText.text + "\n" + "F6: Add All Items";
         tmText.text = tmText.text + "\n" + "F7: Add xp";
+        tmText.text = tmText.text + "\n" + "F8: Suicidal thoughts";
     }
 }

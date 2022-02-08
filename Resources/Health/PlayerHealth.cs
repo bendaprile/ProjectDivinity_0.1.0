@@ -23,6 +23,12 @@ public class PlayerHealth : Health
     public void OnDeathFunc()
     {
         health = maxHealth;
+        WeaponController weaponController = FindObjectOfType<WeaponController>();
+        weaponController.Reload(true);
+        weaponController.SwitchWeapon(true);
+        weaponController.Reload(true);
+        weaponController.SetLastUsedWeapon(false);
+        weaponController.RefreshWeapons();
     }
 
     protected override void FixedUpdate()

@@ -84,6 +84,11 @@ public class WeaponController : MonoBehaviour
         weaponEquipped = false;
     }
 
+    public void SetLastUsedWeapon(bool lastUsed)
+    {
+        lastUsedWeapon = false;
+    }
+
     public void enableDisable(bool enable) //int so the animation controller can use it (called by ablities)
     {
         if (enable) //end sus attacks upon ability cast (which will disable the weapons)
@@ -155,13 +160,13 @@ public class WeaponController : MonoBehaviour
 
 
     // TODO: Handle input with input manager and not direct key references
-    private void SwitchWeapon()
+    public void SwitchWeapon(bool force = false)
     {
-        if(Current_Time_Limit != float.MaxValue && Input.GetKeyUp(KeyCode.Z))
+        if((Current_Time_Limit != float.MaxValue && Input.GetKeyUp(KeyCode.Z) || force))
         {
             Current_Time_Limit = float.MaxValue;
 
-            if (Time.time >= NextSwap && weaponEquipped)
+            if ((Time.time >= NextSwap && weaponEquipped) || weaponEquipped && force)
             {
 
                 if (Inventory.ReturnWeapon(lastUsedWeapon ? 0 : 1) != null) //Inverted
