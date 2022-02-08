@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b00c83dd82697d947b8eb5340dd59b7d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - lightningSphere: {fileID: 8760076874528372004, guid: 4a68a78d58df69d4f9ce3e0967fc0dea,
+      type: 3}
+  - ObjectToRotate: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

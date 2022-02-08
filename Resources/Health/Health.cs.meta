@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2882f410ef14c4eb58215c68971716e8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - healthSlider: {instanceID: 0}
+  - damageTextPrefab: {fileID: 2359001679525748246, guid: 33ed2d23aae7e874280a75472fe508b8,
+      type: 3}
+  - ETmaster: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
