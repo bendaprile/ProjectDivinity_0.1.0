@@ -81,10 +81,16 @@ public class StatMenuController : MonoBehaviour
 
     public void EnableStatsInfoPanel(string finalValue, List<(string, float)> Add_in, List<(string, float)> Mult_in, (string, string) desc, float posY)
     {
-        StatsInfoPanel.gameObject.SetActive(true);
+        StatsInfoPanel.position = new Vector3(StatsInfoPanel.position.x, posY, StatsInfoPanel.position.z);
 
-        Vector3 tooltipPos = new Vector3(StatsInfoPanel.position.x, posY, StatsInfoPanel.position.z);
-        StatsInfoPanel.position = tooltipPos;
+        if (StatsInfoPanel.localPosition.y < -230f)
+        {
+            StatsInfoPanel.localPosition = new Vector3(StatsInfoPanel.localPosition.x, -230f, StatsInfoPanel.localPosition.z);
+        }
+        else if (StatsInfoPanel.localPosition.y > 210f)
+        {
+            StatsInfoPanel.localPosition = new Vector3(StatsInfoPanel.localPosition.x, 210f, StatsInfoPanel.localPosition.z);
+        }
 
         StatsInfoPanel.GetComponent<Animator>().Play("In");
         StatsInfoPanel.Find("Content").Find("StatName").GetComponent<TextMeshProUGUI>().text = desc.Item1.ToUpper();

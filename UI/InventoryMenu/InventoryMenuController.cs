@@ -185,15 +185,16 @@ public class InventoryMenuController : MonoBehaviour
 
         if (CompareItemIfEquipped(itemType)) { EnableRightStatPanel(itemName, description, special, itemClass, data); }
 
-        ItemStatsTooltipLeft.gameObject.SetActive(true);
-        ItemStatsTooltipLeft.GetComponent<Animator>().Play("In");
-
-        ItemStatsTooltipLeft.position = new Vector3(ItemStatsTooltipLeft.position.x, posY - 50f, ItemStatsTooltipLeft.position.z);
-
-        if (ItemStatsTooltipLeft.localPosition.y < -150f)
+        ItemStatsTooltipLeft.position = new Vector3(ItemStatsTooltipLeft.position.x, posY, ItemStatsTooltipLeft.position.z);
+        if (ItemStatsTooltipLeft.localPosition.y < -180f)
         {
-            ItemStatsTooltipLeft.localPosition = new Vector3(ItemStatsTooltipLeft.localPosition.x, -200f, ItemStatsTooltipLeft.localPosition.z);
+            ItemStatsTooltipLeft.localPosition = new Vector3(ItemStatsTooltipLeft.localPosition.x, -180f, ItemStatsTooltipLeft.localPosition.z);
         }
+        else if (ItemStatsTooltipLeft.localPosition.y > 160f)
+        {
+            ItemStatsTooltipLeft.localPosition = new Vector3(ItemStatsTooltipLeft.localPosition.x, 160f, ItemStatsTooltipLeft.localPosition.z);
+        }
+        ItemStatsTooltipLeft.GetComponent<Animator>().Play("In");
 
         ItemStatsTooltipLeft.Find("Content").Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemName.ToUpper();
         ItemStatsTooltipLeft.Find("Content").Find("Border").GetComponent<Image>().color = STARTUP_DECLARATIONS.itemQualityColors[itemClass];
@@ -219,16 +220,22 @@ public class InventoryMenuController : MonoBehaviour
         if (disablePanel) { DisableStatPanel(); }
         rightStatEnabled = true;
 
-        ItemStatsTooltipRight.gameObject.SetActive(true);
-        ItemStatsTooltipRight.GetComponent<Animator>().Play("In");
+        ItemStatsTooltipRight.position = new Vector3(ItemStatsTooltipRight.position.x, Input.mousePosition.y, ItemStatsTooltipRight.position.z);
+        if (ItemStatsTooltipRight.localPosition.y < -180f)
+        {
+            ItemStatsTooltipRight.localPosition = new Vector3(ItemStatsTooltipRight.localPosition.x, -180f, ItemStatsTooltipRight.localPosition.z);
+        }
+        else if (ItemStatsTooltipRight.localPosition.y > 160f)
+        {
+            ItemStatsTooltipRight.localPosition = new Vector3(ItemStatsTooltipRight.localPosition.x, 160f, ItemStatsTooltipRight.localPosition.z);
+        }
 
-        Vector3 tooltipPos = new Vector3(ItemStatsTooltipRight.position.x, Input.mousePosition.y, ItemStatsTooltipRight.position.z);
-        ItemStatsTooltipRight.position = tooltipPos;
+        ItemStatsTooltipRight.GetComponent<Animator>().Play("In");
 
         ItemStatsTooltipRight.Find("Content").Find("ItemName").GetComponent<TextMeshProUGUI>().text = itemName.ToUpper();
         ItemStatsTooltipRight.Find("Content").Find("Border").GetComponent<Image>().color = STARTUP_DECLARATIONS.itemQualityColors[itemClass];
         ItemStatsTooltipRight.Find("Content").Find("Description").GetComponent<TextMeshProUGUI>().text = description;
-        ItemStatsTooltipLeft.Find("Content").Find("Special").GetComponent<TextMeshProUGUI>().text = special;
+        ItemStatsTooltipRight.Find("Content").Find("Special").GetComponent<TextMeshProUGUI>().text = special;
 
         foreach ((string, string) item in data)
         {

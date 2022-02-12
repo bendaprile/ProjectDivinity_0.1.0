@@ -11,7 +11,7 @@ public class DeleteItem : MonoBehaviour
     public void SetInventoryUIPrefab(InventoryUIPrefab inventoryUIPrefab)
     {
         this.inventoryUIPrefab = inventoryUIPrefab;
-        descriptionField.text = "ARE YOU SURE YOU WANT TO DESTROY " + inventoryUIPrefab.GetItemName() + "?";
+        descriptionField.text = "ARE YOU SURE YOU WANT TO DESTROY YOUR" + inventoryUIPrefab.GetItemName() + "?";
     }
 
     public void ConfirmDelete()

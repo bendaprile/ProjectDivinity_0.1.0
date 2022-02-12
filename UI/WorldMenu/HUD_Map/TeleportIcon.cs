@@ -15,10 +15,12 @@ public class TeleportIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     private string locName = "Default Name";
     private string locDescription = "Default Description";
     private mapScript map;
+    private UIController ui;
 
     private void Start()
     {
         map = FindObjectOfType<mapScript>();
+        ui = FindObjectOfType<UIController>();
     }
 
 
@@ -54,6 +56,11 @@ public class TeleportIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             {
                 bcMaster.forceExitCurrentBuilding = true;
             }
+            if (ui.current_UI_mode == UI_Mode.PauseMenu)
+            {
+                ui.Unpaused();
+            }
+
             GameObject.Find("Player").transform.position = world_loc;
         }
 

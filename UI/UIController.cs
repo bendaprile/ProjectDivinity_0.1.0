@@ -68,12 +68,10 @@ public class UIController : MonoBehaviour
             }
             else if (current_UI_mode == UI_Mode.PauseMenu)
             {
-                Menu.SetActive(false);
                 Unpaused();
             }
             else if(current_UI_mode == UI_Mode.Normal)
             {
-                Menu.SetActive(true);
                 Paused();
             }
         }
@@ -136,6 +134,7 @@ public class UIController : MonoBehaviour
             CurrentMerchant.SetMovementLocked(true);
         }
         Map.SetActive(false);
+        mapOpen = false;
         playerAnimationUpdater.PlayAnimation("idle");
         current_UI_mode = UI_Mode.InteractiveMenu;
         InteractiveObjectMenu.SetActive(true);
@@ -205,6 +204,7 @@ public class UIController : MonoBehaviour
             playerAnimationUpdater.PlayAnimation("idle");
 
             Map.SetActive(false);
+            mapOpen = false;
             compass.SetActive(false);
             HUD.GetComponent<CanvasGroup>().alpha = 0;
             DialogueMenu.SetActive(true);
@@ -250,6 +250,7 @@ public class UIController : MonoBehaviour
 
     void Paused()
     {
+        Menu.SetActive(true);
         compass.SetActive(false);
         cinemachineBrain.m_IgnoreTimeScale = true;
         cinemachineBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.LateUpdate;
@@ -265,8 +266,9 @@ public class UIController : MonoBehaviour
         HUD.GetComponent<CanvasGroup>().alpha = 0;
     }
 
-    void Unpaused()
+    public void Unpaused()
     {
+        Menu.SetActive(false);
         compass.SetActive(true);
         cinemachineBrain.m_IgnoreTimeScale = false;
         cinemachineBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.SmartUpdate;
