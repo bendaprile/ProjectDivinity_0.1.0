@@ -7,6 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UMA.CharacterSystem;
 using UMA;
 
+[System.Serializable]
+public struct NewGameSave
+{
+    public int[] skills;
+    public int[] aptitude;
+}
+
 
 public class SaveData : MonoBehaviour
 {
@@ -64,7 +71,7 @@ public class SaveData : MonoBehaviour
 
         ImplantController[] impCont = FindObjectsOfType<ImplantController>(true);
 
-        foreach(ImplantController imp in impCont)
+        foreach (ImplantController imp in impCont)
         {
             CurrentState.SaveImplants(imp.return_implants());
         }
@@ -119,7 +126,22 @@ public class SaveData : MonoBehaviour
 
     public void NewGameStart()
     {
-        //TODO: Load selected player stats here as well
+        string destination = Application.persistentDataPath + "/temp.dat";
+        FileStream file = File.OpenRead(destination);
+        BinaryFormatter bf = new BinaryFormatter();
+        NewGameSave tempData = (NewGameSave)bf.Deserialize(file);
+
+        PlayerStats ps = FindObjectOfType<PlayerStats>();
+        for(int i = 0; i < 3; ++i)
+        {
+            ps.SetAptitude((AptitudeEnum)i, tempData.aptitude[i]);
+        }
+
+        for (int i = 0; i < 7; ++i)
+        {
+            ps.ModifySkill((SkillsEnum)i, tempData.skills[i]);
+        }
+
         StartCoroutine(PlayerUMALoad());
     }
 

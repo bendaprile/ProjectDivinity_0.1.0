@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UMA.CharacterSystem;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WeaponController : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class WeaponController : MonoBehaviour
     private GameObject itemParent;
     private PlayerAnimationUpdater pAU;
     private AbilitiesController AC;
-    private Transform weaponDisplay;
+    private WeaponDisplay weaponDisplay;
     private bool lateStart = true;
 
     private bool weaponEquipped = false;
@@ -32,7 +33,7 @@ public class WeaponController : MonoBehaviour
         Storage = GameObject.Find("WeaponStorage").transform;
         pAU = GameObject.Find("Player").GetComponentInChildren<PlayerAnimationUpdater>();
         AC = FindObjectOfType<AbilitiesController>();
-        weaponDisplay = GameObject.Find("WeaponDisplay").transform;
+        weaponDisplay = FindObjectOfType<WeaponDisplay>();
         lastUsedWeapon = false;
     }
 
@@ -66,7 +67,7 @@ public class WeaponController : MonoBehaviour
             if(temp != null)
             {
                 itemParent = temp.gameObject;
-                UpdateHUDWeapon();
+                weaponDisplay.UpdateHUDWeapon(weaponEquipped);
                 lateStart = false;
             }
         }
@@ -80,13 +81,13 @@ public class WeaponController : MonoBehaviour
             currentWeaponGameObject.gameObject.SetActive(false);
             currentWeaponGameObject = null;
         }
-        UpdateHUDWeapon();
         weaponEquipped = false;
+        weaponDisplay.UpdateHUDWeapon(weaponEquipped);
     }
 
     public void SetLastUsedWeapon(bool lastUsed)
     {
-        lastUsedWeapon = false;
+        lastUsedWeapon = lastUsed;
     }
 
     public void enableDisable(bool enable) //int so the animation controller can use it (called by ablities)
@@ -155,7 +156,7 @@ public class WeaponController : MonoBehaviour
             weaponEquipped = true;
             CleanParenting();
         }
-        UpdateHUDWeapon();
+        weaponDisplay.UpdateHUDWeapon(weaponEquipped);
     }
 
 
@@ -178,7 +179,7 @@ public class WeaponController : MonoBehaviour
                     currentWeaponGameObject = Inventory.ReturnWeapon(lastUsedWeapon ? 1 : 0); //Normal
                     CleanParenting();
                 }
-                UpdateHUDWeapon();
+                weaponDisplay.SwitchWeapon(currentWeaponGameObject.GetComponent<Weapon>());
             }
         }
     }
@@ -242,23 +243,6 @@ public class WeaponController : MonoBehaviour
         currentWeaponGameObject.transform.localEulerAngles = tempWeapon.StartingRotation;
         currentWeaponGameObject.transform.localPosition = tempWeapon.StartingLocation;
         currentWeaponGameObject.transform.localScale = tempWeapon.StartingScale;
-    }
-
-    private void UpdateHUDWeapon()
-    {
-        if (currentWeaponGameObject)
-        {
-            weaponDisplay.Find("Image").GetComponent<Image>().sprite = currentWeaponGameObject.GetComponent<Weapon>().item_sprite;
-            weaponDisplay.Find("Image").GetComponent<Image>().color = Color.white;
-            weaponDisplay.Find("Border").GetComponent<Image>().color
-                = STARTUP_DECLARATIONS.itemQualityColors[currentWeaponGameObject.GetComponent<Weapon>().ReturnBasicStats().Item5];
-        }
-        else
-        {
-            weaponDisplay.Find("Image").GetComponent<Image>().sprite = null;
-            weaponDisplay.Find("Image").GetComponent<Image>().color = Color.clear;
-            weaponDisplay.Find("Border").GetComponent<Image>().color = new Color32(130, 90, 36, 255);
-        }
     }
 
     public GameObject getCurrentWeapon()

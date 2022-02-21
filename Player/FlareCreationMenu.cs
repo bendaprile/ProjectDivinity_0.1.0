@@ -24,10 +24,16 @@ public class FlareCreationMenu : MonoBehaviour
 
     private FlareCreate currentScreen = FlareCreate.Skills;
 
+    private int[] apt = new int[3];
     private int[] skillPoints = new int[7];
     private int skillPointsRemaining = 10;
     private bool aptitudeEnabled = false;
     private bool buttonEnabled = true;
+
+    public (int[], int[]) returnData()
+    {
+        return (apt, skillPoints);
+    }
 
     private void Start()
     {
@@ -196,13 +202,13 @@ public class FlareCreationMenu : MonoBehaviour
 
     public void UpdateAptitude(Vector2 pos)
     {
-        int cerebral = Translation_Cerebral(pos);
-        int finesse = Translation_Finesse(pos);
-        int vigor = 12 - cerebral - finesse;
+        apt[0] = Translation_Cerebral(pos);
+        apt[1] = Translation_Finesse(pos);
+        apt[2] = 12 - apt[0] - apt[1];
 
-        aptitudePoints[0].GetComponentInChildren<TextMeshProUGUI>().text = cerebral.ToString();
-        aptitudePoints[2].GetComponentInChildren<TextMeshProUGUI>().text = finesse.ToString();
-        aptitudePoints[1].GetComponentInChildren<TextMeshProUGUI>().text = vigor.ToString();
+        aptitudePoints[0].GetComponentInChildren<TextMeshProUGUI>().text = apt[0].ToString();
+        aptitudePoints[2].GetComponentInChildren<TextMeshProUGUI>().text = apt[1].ToString();
+        aptitudePoints[1].GetComponentInChildren<TextMeshProUGUI>().text = apt[2].ToString();
     }
 
     public void IncrementSkill(int skillNum) {

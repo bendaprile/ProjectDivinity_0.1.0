@@ -143,14 +143,14 @@ public class Inventory : MonoBehaviour
 
 
     //EquipedWeapons//////////////////////////////////
-    public void EquipWeapon(GameObject item, int equppied_location)
+    public void EquipWeapon(GameObject item, int equipped_loc)
     {
         ItemMaster tempMaster = item.GetComponent<ItemMaster>();
         int itemSubArray = (int)tempMaster.ReturnItemType();
 
-        UnEquipWeapon(equppied_location);
+        UnEquipWeapon(equipped_loc);
 
-        EquippedWeapons[equppied_location] = item;
+        EquippedWeapons[equipped_loc] = item;
         InventoryStorage[itemSubArray][tempMaster.ReturnItemName()].Remove(item);
 
         item.GetComponent<Weapon>().StartWeapon();
@@ -167,9 +167,9 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public GameObject ReturnWeapon(int equppied_location)
+    public GameObject ReturnWeapon(int equipped_loc)
     {
-        return EquippedWeapons[equppied_location];
+        return EquippedWeapons[equipped_loc];
     }
     //EquipedWeapons//////////////////////////////////
 
@@ -269,6 +269,11 @@ public class Inventory : MonoBehaviour
     public int ReturnNotes()
     {
         return CurrentNotes;
+    }
+
+    public int RetunMaxWeight()
+    {
+        return MaxWeight;
     }
 
     public void AddNotes(int amount)

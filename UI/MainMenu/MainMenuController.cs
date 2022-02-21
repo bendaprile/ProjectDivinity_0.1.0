@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
 using UMA.CharacterSystem;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -194,6 +195,7 @@ public class MainMenuController : MonoBehaviour
 
     private IEnumerator FinalizeFlareCoroutine()
     {
+        tempSaveData();
         umaBody.gameObject.SetActive(true);
         player.rotation = Quaternion.Euler(player.rotation.x, -75f, player.rotation.z);
         FlareCreationMenu.GetComponent<Animator>().Play("Panel Out");
@@ -202,6 +204,27 @@ public class MainMenuController : MonoBehaviour
         consoleCam.Priority = 1;
         yield return new WaitForSecondsRealtime(2.75f);
         CharacterMenu.GetComponent<Animator>().Play("Panel In");
+    }
+
+    private void tempSaveData()
+    {
+        NewGameSave newSave = new NewGameSave();
+        newSave.aptitude = FlareCreationMenu.GetComponent<FlareCreationMenu>().returnData().Item1;
+        newSave.skills = FlareCreationMenu.GetComponent<FlareCreationMenu>().returnData().Item2;
+
+        string destination = Application.persistentDataPath + "/temp.dat";
+        FileStream file;
+        if (File.Exists(destination))
+        {
+            file = File.OpenWrite(destination);
+        }
+        else
+        {
+            file = File.Create(destination);
+        }
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, newSave);
+        file.Close();
     }
 
     private void MassDisable()

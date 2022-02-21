@@ -315,7 +315,7 @@ public class InventoryMenuController : MonoBehaviour
 
     private void Update()
     {
-        LWeight.text = InventoryScript.RetunWeight().ToString();
+        LWeight.text = InventoryScript.RetunWeight().ToString() + "/" + InventoryScript.RetunMaxWeight();
         LNotes.text = InventoryScript.ReturnNotes().ToString();
     }
 }

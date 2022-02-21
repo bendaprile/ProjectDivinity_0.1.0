@@ -92,7 +92,6 @@ public class NonDiegeticController : MonoBehaviour
         kill_until = Time.unscaledTime + HardSwitchDuration;
     }
 
-
     private void Update()
     {
         if(Time.unscaledTime < kill_until)

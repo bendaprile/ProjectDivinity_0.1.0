@@ -23,16 +23,11 @@ public class Ranged : Weapon
     private int currentAmmoCount;
     protected bool attacking;
 
-    protected AmmoDisplay ammoDisplay;
     protected Transform projectileParent;
     protected AudioSource audioSource;
+    private WeaponDisplay weaponDisplay;
 
     private bool Started = false;
-
-    private void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
 
     public void AttemptReload(bool force = false)
     {
@@ -58,7 +53,7 @@ public class Ranged : Weapon
         }
         audioSource.PlayOneShot(ReloadSound);
         currentAmmoCount = ammoCapacity;
-        ammoDisplay.Reload();
+        weaponDisplay.UpdateAmmo(this);
     }
 
     public bool isMagazineEmpty()
@@ -75,6 +70,9 @@ public class Ranged : Weapon
 
     public override void StartWeapon(bool EnemyWeapon_in = false, EnemyTemplateMaster ETM_in = null, HumanoidWeaponExpertise humanoidWeaponExpertise = HumanoidWeaponExpertise.Adept)
     {
+        weaponDisplay = FindObjectOfType<WeaponDisplay>();
+        audioSource = GetComponent<AudioSource>();
+        Debug.Log("Audio Source found");
         base.StartWeapon(EnemyWeapon_in, ETM_in, humanoidWeaponExpertise);
         EnemyWeapon = EnemyWeapon_in;
         Started = true;
@@ -84,8 +82,8 @@ public class Ranged : Weapon
         }
         else
         {
-            ammoDisplay = GameObject.Find("AmmoDisplay").GetComponent<AmmoDisplay>();
             currentAmmoCount = ammoCapacity;
+            weaponDisplay.UpdateAmmo(this);
             projectileParent = GameObject.Find("PlayerProjectiles").transform;
         }
     }
@@ -94,15 +92,7 @@ public class Ranged : Weapon
     {
         if (Started & !EnemyWeapon)
         {
-            ammoDisplay.Setup(ammoCapacity, currentAmmoCount);
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (Started && ammoDisplay)
-        {
-            ammoDisplay.Setup(0, 0);
+            weaponDisplay.UpdateAmmo(this);
         }
     }
 
@@ -193,7 +183,7 @@ public class Ranged : Weapon
     {
         Assert.IsFalse(EnemyWeapon);
         currentAmmoCount -= amount;
-        ammoDisplay.UseAmmo();
+        weaponDisplay.UpdateAmmo(this);
     }
 
     public bool CheckAmmo(int amount = 1)
@@ -205,8 +195,19 @@ public class Ranged : Weapon
         else
         {
             audioSource.PlayOneShot(OutOfAmmoSound);
+            StartCoroutine(weaponDisplay.OutOfAmmoFlash());
             return false;
         }
+    }
+
+    public int GetAmmoCapacity()
+    {
+        return ammoCapacity;
+    }
+
+    public int GetAmmoRemaining()
+    {
+        return currentAmmoCount;
     }
 
     protected override void AdvStatsHelper(List<(string, string)> tempList)
